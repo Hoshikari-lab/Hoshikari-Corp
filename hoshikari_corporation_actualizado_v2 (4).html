@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Hoshikari Corp — grupo global de medios enfocado en la creación, gestión y expansión de propiedad intelectual. Hoshikari Editorial y SAKUBA.">
+<meta name="theme-color" content="#111820">
+<title>Hoshikari Corp | Corporate Profile</title>
+<style>
+:root{
+ --ink:#111820;--ink2:#1d2933;--paper:#f5f6f7;--white:#fff;
+ --muted:#68737c;--line:#dfe4e7;--gold:#b87928;--gold2:#d49a52;
+ --shadow:0 14px 40px rgba(17,24,32,.08);--radius:10px;--ease:.25s ease
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+a{color:inherit} button,input,textarea,select{font:inherit}
+.navbar{position:fixed;z-index:1000;top:0;left:0;width:100%;height:76px;padding:0 clamp(22px,5vw,72px);
+ display:flex;align-items:center;background:rgba(17,24,32,.98);box-shadow:0 5px 24px rgba(0,0,0,.13)}
+.brand{display:flex;align-items:center;min-width:220px;margin-right:auto;text-decoration:none}
+.brand-mark{width:32px;height:32px;border:1px solid var(--gold2);display:grid;place-items:center;color:var(--gold2);font-size:.72rem;letter-spacing:1px;margin-right:13px}
+.logo{font-size:1.05rem;font-weight:800;letter-spacing:2.1px;color:#fff;white-space:nowrap}
+.logo small{display:block;color:#aeb7bd;font-size:.53rem;letter-spacing:2.8px;font-weight:600;margin-top:-1px}
+.nav-links{display:flex;align-items:stretch;gap:4px;list-style:none;height:100%}
+.nav-links a{display:flex;align-items:center;color:#edf1f3;text-decoration:none;font-size:.83rem;font-weight:650;padding:0 13px;position:relative;cursor:pointer;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2)}
+.nav-links a.active:after{content:"";position:absolute;left:13px;right:13px;bottom:0;height:2px;background:var(--gold2)}
+.menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer;margin-left:auto}
+.page{display:none;padding-top:76px;min-height:calc(100vh - 130px)}
+.page.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{min-height:630px;padding:120px 7%;display:flex;align-items:center;background:
+ linear-gradient(90deg,rgba(8,13,18,.94),rgba(8,13,18,.62)),
+ url("https://picsum.photos/1800/900?random=91") center/cover;color:#fff}
+.hero-inner{max-width:850px}.eyebrow{color:var(--gold2);font-weight:750;letter-spacing:2.5px;text-transform:uppercase;font-size:.72rem;margin-bottom:20px}
+.hero h1{font-size:clamp(2.8rem,6vw,5.4rem);line-height:1.02;margin-bottom:22px;letter-spacing:-1.5px}
+.hero h2{font-size:1.35rem;color:#e2b67e;font-weight:500;margin-bottom:22px}.hero p{font-size:1.08rem;max-width:720px;color:#e5eaed}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:5px;padding:12px 21px;font-weight:750;text-decoration:none;cursor:pointer;transition:var(--ease)}
+.btn-primary{background:var(--gold);color:#fff}.btn-primary:hover{background:#9c641f;transform:translateY(-1px)}
+.btn-light{background:#fff;color:var(--ink)}.btn-outline{border:1px solid rgba(255,255,255,.42);color:#fff;background:transparent}.btn-outline:hover{border-color:#fff}
+.container{max-width:1240px;margin:auto;padding:76px 5%}.narrow{max-width:900px}
+.section-head{margin-bottom:38px;border-bottom:1px solid var(--line);padding-bottom:20px}
+.section-head h1,.section-head h2{color:var(--ink);line-height:1.18;margin-bottom:9px}.section-head h1{font-size:2.55rem}.section-head h2{font-size:1.95rem}.section-head p{color:var(--muted);max-width:820px}
+.kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:800;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.card:hover{transform:translateY(-3px);transition:var(--ease)}.card img{width:100%;height:180px;object-fit:cover}.card-body{padding:25px}
+.card h3{color:var(--ink);margin-bottom:8px}.card p{color:#59656d}.tag{display:inline-block;color:var(--gold);font-size:.7rem;font-weight:850;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}.split img{width:100%;border-radius:var(--radius);box-shadow:var(--shadow)}
+.split p{margin-bottom:16px;color:#465158}.checklist{list-style:none;display:grid;gap:11px;margin-top:20px}.checklist li{padding-left:20px;position:relative}.checklist li:before{content:"";width:6px;height:6px;background:var(--gold);position:absolute;left:0;top:.7em}
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin:25px 0 40px;padding:12px;background:#eceff1;border:1px solid var(--line)}
+.subnav a{background:#fff;border:1px solid var(--line);padding:8px 13px;text-decoration:none;color:var(--ink);font-weight:700;font-size:.86rem}.subnav a:hover{border-color:var(--gold);color:var(--gold)}
+.notice{border-left:4px solid var(--gold);background:#fff;padding:23px 25px;border:1px solid var(--line);border-left-width:4px;box-shadow:var(--shadow);margin:16px 0}.notice h3{color:var(--ink);margin-bottom:7px}
+.executive{display:grid;grid-template-columns:110px 1fr;gap:25px;align-items:center;background:var(--ink);color:#fff;padding:30px;border-radius:var(--radius);margin-top:24px}
+.executive-avatar{width:86px;height:86px;border:1px solid var(--gold2);display:grid;place-items:center;color:var(--gold2);font-size:1.6rem;font-weight:700}
+.executive h3{font-size:1.35rem;margin-bottom:4px}.executive .role{color:var(--gold2);font-size:.74rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
+.profile-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.profile-table th,.profile-table td{text-align:left;padding:17px 20px;border-bottom:1px solid var(--line);vertical-align:top}.profile-table th{width:28%;background:#f0f2f3;font-size:.82rem;text-transform:uppercase;letter-spacing:1px}.profile-table tr:last-child th,.profile-table tr:last-child td{border-bottom:0}
+.sakuba{background:var(--ink);color:#fff;border-radius:var(--radius);padding:42px;margin-top:25px}.sakuba .section-head{border-color:#34414b}.sakuba h2,.sakuba h3{color:#fff}.sakuba p{color:#cdd5da}.sakuba .tag{color:var(--gold2)}
+.timeline{display:grid;gap:13px;margin-top:25px}.phase{display:grid;grid-template-columns:145px 1fr;gap:20px;background:#17212a;border:1px solid #303c45;padding:21px}.phase strong{color:var(--gold2);font-size:.78rem;text-transform:uppercase;letter-spacing:1px}.phase h3{margin-bottom:5px}
+.status{display:inline-flex;align-items:center;padding:6px 10px;border:1px solid #d9c19f;background:#fbf5eb;color:#8a5a20;font-size:.7rem;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+.job{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:25px;align-items:center;margin-top:14px}.job h3{color:var(--ink)}.job p{color:var(--muted);margin:5px 0}.job .btn{white-space:nowrap}.job.disabled{opacity:.92}
+.faq{background:#fff;border:1px solid var(--line);margin:11px 0;overflow:hidden}.faq summary{padding:19px 21px;cursor:pointer;font-weight:800;color:var(--ink)}.faq p{padding:0 21px 19px;color:#59656d}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.contact-box{background:var(--ink);color:#fff;border-radius:var(--radius);padding:28px}.contact-box h3{color:#e0b278;margin-bottom:8px}.contact-box a{color:#fff}
+footer{background:var(--ink);color:#dfe6ea;border-top:3px solid var(--gold);padding:35px 5%;display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap}footer a{text-decoration:none;color:#fff}.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.back-top{position:fixed;right:20px;bottom:20px;width:44px;height:44px;border:0;background:var(--gold);color:#fff;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);display:none}.back-top.show{display:block}
+@media(max-width:1050px){.brand{min-width:0}.nav-links{gap:0}.nav-links a{padding:0 8px;font-size:.77rem}.nav-links a.active:after{left:8px;right:8px}}
+@media(max-width:850px){.nav-links{position:absolute;top:76px;left:0;right:0;background:var(--ink);display:none;flex-direction:column;align-items:stretch;height:auto;padding:10px 5%;gap:0;border-top:1px solid #2e3941}.nav-links.open{display:flex}.nav-links a{display:block;padding:13px 0}.nav-links a.active:after{display:none}.menu-toggle{display:block}.split,.contact-grid{grid-template-columns:1fr}.job{align-items:flex-start;flex-direction:column}.job .btn{width:100%}.executive{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:7px}}
+@media(max-width:560px){.brand-mark{display:none}.logo{font-size:.92rem}.container{padding:55px 5%}.hero{padding:90px 6%;min-height:560px}.hero h1{font-size:2.7rem}.section-head h1{font-size:2.15rem}.profile-table th,.profile-table td{display:block;width:100%}.profile-table th{border-bottom:0;padding-bottom:4px}.profile-table td{padding-top:4px}.sakuba{padding:28px 20px}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="#inicio" aria-label="Hoshikari Corp">
+    <span class="brand-mark">HC</span>
+    <span class="logo">HOSHIKARI CORP<small>GLOBAL MEDIA GROUP</small></span>
+  </a>
+  <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">☰</button>
+  <ul class="nav-links" id="mainNav">
+    <li><a data-route="inicio" href="#inicio">Inicio</a></li>
+    <li><a data-route="acerca" href="#acerca">Corporativo</a></li>
+    <li><a data-route="noticias" href="#noticias">Noticias</a></li>
+    <li><a data-route="convocatoria" href="#convocatoria">Convocatoria</a></li>
+    <li><a data-route="bolsa" href="#bolsa">Bolsa de trabajo</a></li>
+    <li><a data-route="faq" href="#faq">Preguntas frecuentes</a></li>
+    <li><a data-route="contacto" href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<main>
+<section id="inicio" class="page">
+<header class="hero">
+<div class="hero-inner">
+  <div class="eyebrow">Hoshikari Corp · Global Media Group</div>
+  <h1>Creación, gestión y expansión de IP.</h1>
+  <h2>Medios, edición y desarrollo de propiedad intelectual.</h2>
+  <p>Hoshikari Corp se consolidará como un grupo global de medios enfocado en la creación, gestión y expansión de propiedad intelectual dentro del sector del entretenimiento.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="#acerca">Perfil corporativo</a>
+    <a class="btn btn-outline" href="#sakuba">Conocer SAKUBA</a>
+  </div>
+</div>
+</header>
+<div class="container">
+<div class="section-head"><div class="kicker">Corporate Overview</div><h2>Un grupo construido alrededor de la IP</h2><p>Una visión que conecta la tecnología con la narrativa tradicional para impulsar proyectos culturales originales dirigidos al público de habla hispana en todo el mundo.</p></div>
+<div class="grid">
+<article class="card"><div class="card-body"><span class="tag">Grupo</span><h3>Hoshikari Corp</h3><p>Empresa matriz orientada a la dirección estratégica, desarrollo de negocios, alianzas e infraestructura del grupo.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Editorial</span><h3>Hoshikari Editorial</h3><p>Filial operativa dedicada a la publicación, distribución y gestión de Manga y Novelas Ligeras en formato físico y digital.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Plataforma</span><h3>SAKUBA 「作場」</h3><p>Plataforma oficial de novelas ligeras concebida para lectura digital, auto-publicación y desarrollo de nuevos talentos.</p></div></article>
+</div>
+</div>
+</section>
+
+<section id="acerca" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Company Profile · 会社概要</div><h1>Perfil corporativo</h1><p>Identidad, estructura, filosofía y líneas de negocio de Hoshikari Corp.</p></div>
+<nav class="subnav" aria-label="Subnavegación corporativa">
+<a href="#acerca/mensaje">Mensaje corporativo</a><a href="#acerca/filosofia">Filosofía corporativa</a><a href="#acerca/estructura">Estructura</a><a href="#acerca/perfil">Datos de la empresa</a><a href="#acerca/directores">Dirección ejecutiva</a><a href="#acerca/editorial">Hoshikari Editorial</a>
+</nav>
+
+<div id="acerca-mensaje" class="anchor-block">
+<div class="split">
+<div><span class="tag">コーポレートメッセージ</span><h2>Mensaje Corporativo</h2>
+<p>Hoshikari Corp se consolidará como un grupo global de medios enfocado en la creación, gestión y expansión de propiedad intelectual (IP) dentro del sector del entretenimiento.</p>
+<p>A través de una visión que conecta la tecnología con la narrativa tradicional, actuaremos como la empresa matriz que respaldará y potenciará proyectos culturales originales destinados al público de habla hispana en todo el mundo.</p>
+<p>Nuestra principal filial operativa, Hoshikari Editorial, funcionará como una casa productora dedicada exclusivamente a la publicación, distribución y gestión de Manga y Novelas Ligeras (Light Novels) en formato físico y digital.</p></div>
+<img src="https://picsum.photos/800/560?random=104" alt="Hoshikari Corp">
+</div></div>
+
+<div id="acerca-filosofia" class="anchor-block" style="margin-top:75px">
+<div class="section-head"><div class="kicker">企業理念</div><h2>Filosofía Corporativa</h2><p>Principios que orientan la construcción del grupo y el desarrollo de sus propiedades intelectuales.</p></div>
+<div class="grid">
+<article class="card"><div class="card-body"><span class="tag">Misión</span><h3>Desarrollar IP con identidad</h3><p>Crear, editar y proyectar obras originales, ofreciendo a autores y equipos creativos un entorno profesional para convertir ideas en propiedades intelectuales sostenibles.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Visión</span><h3>Conectar historias con el mundo</h3><p>Construir un grupo global de medios capaz de conectar talento de México y Latinoamérica con lectores y audiencias internacionales.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Principios</span><h3>IP · Tecnología · Cultura</h3><p>Preservar la identidad de cada obra, incorporar tecnología de forma estratégica y desarrollar modelos de distribución que amplíen su alcance.</p></div></article>
+</div></div>
+
+<div id="acerca-estructura" class="anchor-block" style="margin-top:75px">
+<div class="section-head"><div class="kicker">Group Structure</div><h2>Estructura corporativa</h2></div>
+<div class="notice"><h3>Hoshikari Corp</h3><p>Empresa matriz y centro de dirección estratégica del grupo. Coordina el desarrollo corporativo, las alianzas internacionales, la expansión de IP y la infraestructura tecnológica.</p></div>
+<div class="notice"><h3>Hoshikari Editorial</h3><p>Principal filial operativa. Casa productora editorial dedicada a la publicación, distribución y gestión de Manga y Novelas Ligeras en formatos físico y digital.</p></div>
+<div class="notice"><h3>SAKUBA 「作場」</h3><p>Plataforma digital oficial de novelas ligeras de Hoshikari, concebida como infraestructura para lectura, publicación y desarrollo de nuevos talentos.</p></div>
+</div>
+
+<div id="acerca-perfil" class="anchor-block" style="margin-top:75px">
+<div class="section-head"><div class="kicker">会社概要</div><h2>Datos de la empresa</h2></div>
+<table class="profile-table">
+<tr><th>Nombre de la Empresa</th><td>Hoshikari Corporation</td></tr>
+<tr><th>Denominación de marca</th><td>Hoshikari Corp</td></tr>
+<tr><th>Líneas de Negocio</th><td>Planificación, edición y distribución de Manga y Novelas Ligeras (físico y digital).<br>Desarrollo y operación de plataformas de contenido digital (SAKUBA).<br>Gestión global de derechos y propiedad intelectual (IP).</td></tr>
+<tr><th>Oficinas Operativas</th><td>México — Centro de gestión editorial, desarrollo de talento regional y distribución para el mercado de Latinoamérica.</td></tr>
+<tr><th>Oficinas Centrales</th><td>Japón — Próximo establecimiento. Sede central global encargada de la dirección estratégica, alianzas internacionales e infraestructura tecnológica del grupo.</td></tr>
+</table>
+</div>
+
+<div id="acerca-directores" class="anchor-block" style="margin-top:75px">
+<div class="section-head"><div class="kicker">Executive Management</div><h2>Dirección Ejecutiva</h2></div>
+<div class="executive">
+<div class="executive-avatar">JJ</div>
+<div><div class="role">Chief Executive Officer · CEO</div><h3>Johan Juarez</h3><p>CEO de Hoshikari Corporation.</p></div>
+</div>
+</div>
+
+<div id="acerca-editorial" class="anchor-block" style="margin-top:75px">
+<div class="section-head"><div class="kicker">Editorial Division</div><h2>Hoshikari Editorial</h2><p>La principal filial operativa del grupo y su casa productora editorial.</p></div>
+<ul class="checklist"><li>Publicación y distribución de Manga.</li><li>Publicación y distribución de Novelas Ligeras (Light Novels).</li><li>Formatos físicos y digitales.</li><li>Gestión y expansión de propiedades intelectuales.</li><li>Desarrollo editorial de autores y proyectos de México y Latinoamérica.</li></ul>
+</div>
+</div>
+</section>
+
+<section id="noticias" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Corporate News</div><h1>Noticias</h1><p>Actualizaciones, anuncios y novedades corporativas de Hoshikari Corp y sus proyectos.</p></div>
+<div class="grid">
+<article class="card"><div class="card-body"><span class="tag">Corporativo</span><h3>Consolidación del grupo de medios</h3><p>Hoshikari Corp estructura sus actividades alrededor de la creación, gestión y expansión de propiedad intelectual.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Editorial</span><h3>Desarrollo de Hoshikari Editorial</h3><p>La filial operativa concentrará la publicación y gestión de Manga y Novelas Ligeras en formatos físico y digital.</p></div></article>
+<article class="card"><div class="card-body"><span class="tag">Plataforma</span><h3>SAKUBA 「作場」</h3><p>El desarrollo de la plataforma digital avanza hacia su despliegue previsto para la temporada de otoño.</p></div></article>
+</div>
+</div>
+</section>
+
+<section id="convocatoria" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Recruitment for Creators</div><h1>Convocatoria</h1><p>La convocatoria para autores y creadores se encuentra actualmente en preparación.</p></div>
+<div class="notice"><span class="status">Próximamente</span><h3 style="margin-top:12px">Convocatoria de proyectos</h3><p>Hoshikari Editorial prepara los lineamientos, requisitos y canales oficiales para la recepción de propuestas. La convocatoria será anunciada cuando el sistema esté habilitado.</p></div>
+<div class="split" style="margin-top:45px">
+<div><h2>Desarrollo de nuevos talentos</h2><p>La futura convocatoria estará orientada al descubrimiento y profesionalización de obras y autores de México y Latinoamérica, con especial atención a Manga y Novelas Ligeras.</p><ul class="checklist"><li>Manga.</li><li>Novelas Ligeras y narrativa.</li><li>Propiedades intelectuales originales.</li><li>Proyectos vinculados a nuevos talentos.</li></ul></div>
+<img src="https://picsum.photos/800/600?random=114" alt="Convocatoria Hoshikari">
+</div>
+</div>
+</section>
+
+<section id="bolsa" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Careers</div><h1>Bolsa de trabajo</h1><p>Las oportunidades profesionales de Hoshikari se publicarán en esta sección conforme se habiliten.</p></div>
+<div class="notice"><span class="status">Próximamente</span><h3 style="margin-top:12px">Bolsa de trabajo en preparación</h3><p>Actualmente no hay vacantes abiertas. El portal de oportunidades será habilitado próximamente junto con los perfiles, requisitos y canales oficiales de postulación.</p></div>
+<div class="job disabled"><div><span class="tag">Editorial</span><h3>Editor/a y corrector/a</h3><p>Próximamente · Perfil en preparación.</p></div><span class="status">Próximamente</span></div>
+<div class="job disabled"><div><span class="tag">Diseño</span><h3>Diseñador/a editorial</h3><p>Próximamente · Perfil en preparación.</p></div><span class="status">Próximamente</span></div>
+<div class="job disabled"><div><span class="tag">Contenido</span><h3>Redactor/a y creador/a de contenido</h3><p>Próximamente · Perfil en preparación.</p></div><span class="status">Próximamente</span></div>
+<div class="job disabled"><div><span class="tag">Prácticas</span><h3>Colaboraciones y prácticas profesionales</h3><p>Próximamente · Información disponible cuando se abra el programa.</p></div><span class="status">Próximamente</span></div>
+</div>
+</section>
+
+<section id="faq" class="page">
+<div class="container narrow">
+<div class="section-head"><div class="kicker">FAQ</div><h1>Preguntas frecuentes</h1><p>Información general sobre Hoshikari Corp, Hoshikari Editorial y SAKUBA.</p></div>
+<details class="faq"><summary>¿Qué es Hoshikari Corp?</summary><p>Es la denominación de marca de Hoshikari Corporation, grupo global de medios enfocado en creación, gestión y expansión de propiedad intelectual.</p></details>
+<details class="faq"><summary>¿Qué es Hoshikari Editorial?</summary><p>Es la principal filial operativa, dedicada a la publicación, distribución y gestión de Manga y Novelas Ligeras en formato físico y digital.</p></details>
+<details class="faq"><summary>¿Qué es SAKUBA?</summary><p>SAKUBA 「作場」 es la plataforma oficial de novelas ligeras de Hoshikari. Su despliegue contempla una primera fase de lectura y una fase posterior de auto-publicación.</p></details>
+<details class="faq"><summary>¿Cuándo estará disponible SAKUBA?</summary><p>El lanzamiento está previsto para la temporada de otoño. Las fechas y condiciones definitivas serán comunicadas por Hoshikari.</p></details>
+<details class="faq"><summary>¿Puedo enviar mi manuscrito actualmente?</summary><p>La convocatoria se encuentra próximamente disponible. Los requisitos y canales oficiales se publicarán cuando la convocatoria sea habilitada.</p></details>
+<details class="faq"><summary>¿Hay vacantes de trabajo?</summary><p>La bolsa de trabajo se encuentra próximamente disponible. Las vacantes se publicarán en esta sección cuando sean habilitadas.</p></details>
+</div>
+</section>
+
+<section id="contacto" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Contact</div><h1>Contacto</h1><p>Canales corporativos para las distintas áreas de Hoshikari.</p></div>
+<div class="contact-grid">
+<div class="contact-box"><h3>Autores y convocatorias</h3><p>Información sobre futuras convocatorias y recepción de proyectos.</p><p style="margin-top:12px"><a href="mailto:convocatorias@hoshikari.com">convocatorias@hoshikari.com</a></p></div>
+<div class="contact-box"><h3>Talento y empleo</h3><p>Canal destinado a oportunidades profesionales cuando la bolsa sea habilitada.</p><p style="margin-top:12px"><a href="mailto:talento@hoshikari.com">talento@hoshikari.com</a></p></div>
+<div class="contact-box"><h3>Alianzas y negocios</h3><p>Colaboraciones, acuerdos, licencias y proyectos corporativos.</p><p style="margin-top:12px"><a href="mailto:contacto@hoshikari.com">contacto@hoshikari.com</a></p></div>
+<div class="contact-box"><h3>Consultas generales</h3><p>Consultas sobre Hoshikari Corp, sus plataformas y servicios.</p><p style="margin-top:12px"><a href="mailto:contacto@hoshikari.com">contacto@hoshikari.com</a></p></div>
+</div>
+</div>
+</section>
+
+<section id="sakuba" class="page">
+<div class="container">
+<div class="section-head"><div class="kicker">Digital Platform · 作場</div><h1>SAKUBA 「作場」</h1><p>Plataforma oficial de novelas ligeras de Hoshikari y componente estratégico del ecosistema digital.</p></div>
+<div class="sakuba">
+<div class="section-head"><div class="kicker">Próximo despliegue</div><h2>Una infraestructura digital para la lectura y la creación</h2><p>Hoshikari Corp impulsará la innovación en el ecosistema de lectura digital mediante el lanzamiento de SAKUBA, previsto para la temporada de otoño.</p></div>
+<div class="timeline">
+<div class="phase"><strong>Fase 01 · Lanzamiento</strong><div><h3>Solo Lectura</h3><p>La plataforma operará inicialmente como un entorno de lectura optimizado. Hoshikari Editorial gestionará directamente la carga, actualización y administración institucional de capítulos y series del catálogo oficial.</p></div></div>
+<div class="phase"><strong>Fase 02 · Apertura</strong><div><h3>Auto-publicación</h3><p>En una etapa posterior se habilitarán funciones para que autores independientes puedan subir y gestionar sus propios manuscritos directamente en la plataforma.</p></div></div>
+<div class="phase"><strong>Desarrollo de IP</strong><div><h3>Historias originales</h3><p>SAKUBA funcionará como canal digital para proyectar y profesionalizar obras de nuevos talentos de México y Latinoamérica.</p></div></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+<div><strong>Hoshikari Corp</strong><br><span>Hoshikari Corporation · Global Media Group</span></div>
+<div class="footer-links"><a href="#acerca">Corporativo</a><a href="#noticias">Noticias</a><a href="#convocatoria">Convocatoria</a><a href="#bolsa">Bolsa de trabajo</a><a href="#faq">FAQ</a><a href="#contacto">Contacto</a></div>
+<div>© 2026 Hoshikari Corporation. Todos los derechos reservados.</div>
+</footer>
+<button class="back-top" id="backTop" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const routes=["inicio","acerca","noticias","convocatoria","bolsa","faq","contacto","sakuba"];
+function normalizeHash(){
+  let hash=decodeURIComponent(location.hash.replace(/^#/,""))||"inicio";
+  let route=hash.split("/")[0];
+  return routes.includes(route)?route:"inicio";
+}
+function activate(){
+  const route=normalizeHash();
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===route));
+  document.querySelectorAll(".nav-links a").forEach(a=>a.classList.toggle("active",a.dataset.route===route));
+  document.getElementById("mainNav").classList.remove("open");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(route==="acerca" && location.hash.includes("/")){
+    const sub=location.hash.split("/")[1];
+    setTimeout(()=>{const el=document.getElementById("acerca-"+sub);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});},80);
+  }
+}
+function toggleMenu(){document.getElementById("mainNav").classList.toggle("open")}
+window.addEventListener("hashchange",activate);
+window.addEventListener("load",activate);
+window.addEventListener("scroll",()=>document.getElementById("backTop").classList.toggle("show",window.scrollY>450));
+</script>
+</body>
+</html>
