@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Nexo — Mensajería</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#f4f6fb;--surface:#fff;--ink:#172033;--muted:#788197;--line:#e6eaf2;--accent:#6257e8;--accent2:#8e83ff;--soft:#f0efff;--green:#1caa78;--danger:#d94b61;--radius:20px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+.app{height:100dvh;max-width:1440px;margin:auto;padding:18px;display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px}
+.sidebar,.chat-panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;min-height:0;overflow:hidden}
+.sidebar{display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;padding:22px 20px 16px;font-size:22px;font-weight:950;letter-spacing:-.8px}.brand-mark{width:39px;height:39px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:20px}
+.me{display:flex;align-items:center;gap:10px;padding:12px 17px 17px;border-bottom:1px solid var(--line)}.avatar{width:43px;height:43px;flex:0 0 43px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#7568ed,#b7adff);color:#fff;font-weight:900}.avatar.sm{width:37px;height:37px;flex-basis:37px;border-radius:13px;font-size:12px}.avatar.lg{width:54px;height:54px;flex-basis:54px;border-radius:18px}.me-info{min-width:0;flex:1}.me-info b,.me-info span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.me-info span{font-size:12px;color:var(--muted)}.icon-btn{border:0;background:transparent;color:var(--muted);border-radius:10px;padding:8px}.icon-btn:hover{background:var(--soft);color:var(--accent)}
+.search-wrap{padding:14px 15px 8px}.search{width:100%;border:1px solid var(--line);background:#f8f9fc;border-radius:13px;padding:11px 13px;outline-color:var(--accent)}
+.section-label{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 8px;font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}.section-label button{border:0;background:var(--soft);color:var(--accent);border-radius:9px;padding:6px 9px;font-size:12px;font-weight:800}
+.conversations{overflow:auto;min-height:0;flex:1;padding:3px 8px 12px}.conversation{display:flex;align-items:center;gap:11px;padding:11px 10px;border-radius:15px;cursor:pointer}.conversation:hover,.conversation.active{background:var(--soft)}.conv-main{min-width:0;flex:1}.conv-top{display:flex;justify-content:space-between;gap:8px}.conv-top b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.conv-top time{font-size:10px;color:var(--muted);white-space:nowrap}.preview{display:block;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.unread{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:0 0 8px}
+.chat-panel{display:flex;flex-direction:column;position:relative}.welcome{height:100%;display:grid;place-items:center;text-align:center;padding:35px}.welcome-inner{max-width:380px}.welcome-symbol{width:82px;height:82px;border-radius:27px;display:grid;place-items:center;margin:0 auto 18px;background:var(--soft);color:var(--accent);font-size:36px}.welcome h1{font-size:25px;letter-spacing:-.7px;margin:0 0 8px}.welcome p{color:var(--muted);font-size:14px;margin:0}
+.chat-head{display:flex;align-items:center;gap:12px;padding:15px 20px;border-bottom:1px solid var(--line);min-height:76px}.chat-head-info{min-width:0;flex:1}.chat-head-info b,.chat-head-info span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-head-info span{font-size:11px;color:var(--muted)}.chat-head-actions{display:flex;gap:4px}
+.messages{flex:1;min-height:0;overflow:auto;padding:22px clamp(14px,4vw,48px);display:flex;flex-direction:column;gap:10px;background:linear-gradient(#fbfcff,#fff)}.day-label{text-align:center;color:var(--muted);font-size:10px;margin:8px 0}.message-row{display:flex;align-items:flex-end;gap:7px;max-width:min(78%,620px)}.message-row.mine{align-self:flex-end;flex-direction:row-reverse}.message{background:#f0f2f8;border-radius:17px 17px 17px 5px;padding:10px 13px;min-width:60px;box-shadow:0 1px 1px #17203308}.mine .message{background:linear-gradient(135deg,var(--accent),#7b70f0);color:#fff;border-radius:17px 17px 5px 17px}.message-author{font-size:10px;font-weight:850;color:var(--accent);margin-bottom:3px}.mine .message-author{color:#e7e4ff}.message-body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.message-meta{font-size:9px;color:var(--muted);text-align:right;margin-top:4px}.mine .message-meta{color:#e1deff}.message-delete{border:0;background:transparent;color:#a3a9b8;font-size:11px;padding:4px}.composer{padding:13px 18px 17px;border-top:1px solid var(--line);display:flex;align-items:flex-end;gap:10px}.composer textarea{flex:1;min-width:0;max-height:130px;min-height:45px;resize:vertical;border:1px solid var(--line);border-radius:15px;padding:12px 14px;outline-color:var(--accent);background:#fafbfe}.send{border:0;border-radius:14px;background:var(--accent);color:#fff;font-weight:850;padding:12px 17px;min-height:45px}.send:hover{filter:brightness(1.06)}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 12px;font-size:12px;font-weight:800}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.danger{color:var(--danger)}.empty-list{text-align:center;color:var(--muted);font-size:12px;padding:30px 18px}
+.modal-bg{position:fixed;inset:0;background:#11182780;display:grid;place-items:center;padding:18px;z-index:20}.modal{background:#fff;border-radius:20px;padding:23px;width:min(440px,100%);box-shadow:0 25px 80px #0003}.modal h2{margin:0 0 5px;font-size:21px}.modal>p{color:var(--muted);font-size:12px;margin:0 0 16px}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:5px}.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;outline-color:var(--accent)}.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:17px}.status{font-size:12px;color:var(--danger);margin-top:10px;min-height:18px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#202638;color:#fff;padding:11px 16px;border-radius:12px;z-index:50;font-size:12px;box-shadow:0 10px 35px #0002}
+.user-result{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:13px;margin:8px 0}.user-result .who{flex:1;min-width:0}.user-result b,.user-result span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-result span{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.app{height:100dvh;padding:0;display:block}.sidebar{position:absolute;z-index:5;left:0;right:0;top:0;height:42vh;border-radius:0 0 20px 20px;box-shadow:0 8px 30px #17203312}.brand{padding:12px 15px 8px;font-size:18px}.brand-mark{width:32px;height:32px;border-radius:11px}.me{padding:7px 14px 9px}.me .avatar{width:34px;height:34px;flex-basis:34px;border-radius:12px}.search-wrap{padding:8px 13px 3px}.search{padding:9px 11px}.section-label{padding:7px 16px 4px}.conversations{padding:0 7px 8px}.conversation{padding:7px 9px}.conversation .avatar{width:34px;height:34px;flex-basis:34px;border-radius:12px}.chat-panel{position:absolute;left:0;right:0;bottom:0;height:58vh;border-radius:20px 20px 0 0;border-bottom:0}.chat-panel.expanded{height:100dvh;border-radius:0}.welcome{padding:18px}.welcome-symbol{width:60px;height:60px;font-size:27px;margin-bottom:10px}.welcome h1{font-size:20px}.chat-head{padding:10px 13px;min-height:62px}.messages{padding:12px 12px}.message-row{max-width:88%}.composer{padding:9px 10px calc(10px + env(safe-area-inset-bottom))}.composer textarea{min-height:42px;padding:10px}.send{padding:10px 13px;min-height:42px}}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside class="sidebar">
+  <div class="brand"><span class="brand-mark">N</span> Nexo</div>
+  <div class="me"><div class="avatar" id="my-avatar">N</div><div class="me-info"><b id="my-name">Visitante</b><span id="my-handle">Explora conversaciones</span></div><button class="icon-btn" id="auth-button" title="Entrar o salir">⇥</button></div>
+  <div class="search-wrap"><input class="search" id="people-search" placeholder="Buscar personas por @usuario"></div>
+  <div class="section-label"><span>Mensajes</span><button id="new-chat">＋ Nuevo</button></div>
+  <div id="conversation-list" class="conversations"><div class="empty-list">Inicia sesión para ver tus conversaciones.</div></div>
+ </aside>
+ <main class="chat-panel" id="chat-panel">
+  <section id="welcome" class="welcome"><div class="welcome-inner"><div class="welcome-symbol">✉</div><h1>Tus conversaciones, en un solo lugar</h1><p>Busca personas, inicia un chat privado o crea un grupo para conversar.</p></div></section>
+  <section id="active-chat" class="hidden" style="display:none;min-height:0;flex:1;flex-direction:column">
+   <header class="chat-head"><div class="avatar" id="chat-avatar">N</div><div class="chat-head-info"><b id="chat-title">Conversación</b><span id="chat-subtitle">Mensajes privados</span></div><div class="chat-head-actions"><button class="btn" id="chat-members">Participantes</button></div></header>
+   <div class="messages" id="messages"><div class="empty-list">Selecciona una conversación.</div></div>
+   <form class="composer" id="message-form"><textarea id="message-input" maxlength="5000" rows="1" placeholder="Escribe un mensaje…"></textarea><button class="send" id="send-button">Enviar ↗</button></form>
+  </section>
+ </main>
+</div>
+<div id="modal-root"></div><div id="toast-root"></div>
+<script>
+const APP_URL="https://qtfdsjplwkulnkvuqiza.supabase.co";
+const APP_KEY="sb_publishable_P2yAK8mLMervKTAICWAbiQ_DB6bgHNT";
+const $=id=>document.getElementById(id);
+let client=null,user=null,profile=null,activeConversation=null,activeConversationData=null,messageChannel=null,listChannel=null,searchTimer=null;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=s=>(String(s||"N").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"N");
+function toast(s){$("toast-root").innerHTML=`<div class="toast">${esc(s)}</div>`;setTimeout(()=>$("toast-root").innerHTML="",2800)}
+function modal(title,description,fields,buttons){$("modal-root").innerHTML=`<div class="modal-bg" id="modal-bg"><div class="modal"><h2>${esc(title)}</h2><p>${esc(description)}</p>${fields}<div class="modal-actions">${buttons}</div><div class="status" id="modal-status"></div></div></div>`;$("modal-bg").onclick=e=>{if(e.target.id==="modal-bg")closeModal()}}
+function closeModal(){$("modal-root").innerHTML=""}
+function setStatus(s){const el=$("modal-status");if(el)el.textContent=s}
+function usernameEmail(name){return name+"@nexo.local"}
+function authModal(){modal("Entrar a Nexo","Usa tu nombre de usuario y contraseña. También puedes crear una cuenta.",`<div class="field"><label>Nombre de usuario</label><input id="auth-username" autocomplete="username" maxlength="24" placeholder="tu_usuario"></div><div class="field"><label>Contraseña</label><input id="auth-password" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres"></div>`,`<button class="btn" onclick="closeModal()">Cancelar</button><button class="btn" onclick="doAuth('signin')">Entrar</button><button class="btn primary" onclick="doAuth('signup')">Crear cuenta</button>`)}
+async function doAuth(mode){
+ const raw=$("auth-username").value.trim().toLowerCase(),password=$("auth-password").value;
+ if(!/^[a-z0-9_]{3,24}$/.test(raw)){setStatus("El usuario debe tener de 3 a 24 caracteres: letras, números o guion bajo.");return}
+ if(password.length<8){setStatus("La contraseña debe tener al menos 8 caracteres.");return}
+ const btns=document.querySelectorAll(".modal-actions button");btns.forEach(b=>b.disabled=true);
+ try{
+  let result;
+  if(mode==="signup")result=await client.auth.signUp({email:usernameEmail(raw),password,options:{data:{username:raw,display_name:raw}}});
+  else result=await client.auth.signInWithPassword({email:usernameEmail(raw),password});
+  if(result.error)throw result.error;
+  if(mode==="signup"&&!result.data.session){setStatus("La cuenta se creó. Si no inicia sesión automáticamente, revisa la configuración de confirmación de correo indicada en las instrucciones.");return}
+  closeModal();await syncSession();toast(mode==="signup"?"¡Cuenta creada!":"Sesión iniciada");
+ }catch(e){setStatus(errorMessage(e))}
+ finally{document.querySelectorAll(".modal-actions button").forEach(b=>b.disabled=false)}
+}
+function errorMessage(e){const m=String(e?.message||"Ocurrió un error.");if(/duplicate key|unique constraint/i.test(m))return"Este nombre de usuario ya está ocupado.";if(/invalid login credentials/i.test(m))return"Usuario o contraseña incorrectos.";if(/email not confirmed/i.test(m))return"Debes desactivar la confirmación de correo para el acceso con usuario.";return m}
+async function syncSession(){
+ const {data,error}=await client.auth.getUser();if(error)console.warn(error);
+ user=data?.user||null;profile=null;
+ if(user){const r=await client.from("nexo_profiles").select("user_id,username,display_name,avatar_url").eq("user_id",user.id).maybeSingle();if(r.error)toast("No se pudo cargar el perfil: "+r.error.message);profile=r.data||null}
+ renderMe();await loadConversations();
+}
+function renderMe(){$("my-name").textContent=profile?.display_name||"Visitante";$("my-handle").textContent=user?"@"+(profile?.username||""):"Explora conversaciones";$("my-avatar").textContent=initials(profile?.display_name||"N");$("auth-button").textContent=user?"↪":"⇥";$("auth-button").title=user?"Cerrar sesión":"Entrar o crear cuenta"}
+async function logout(){await client.auth.signOut();user=null;profile=null;activeConversation=null;activeConversationData=null;unsubscribeMessages();renderMe();$("conversation-list").innerHTML='<div class="empty-list">Inicia sesión para ver tus conversaciones.</div>';showWelcome();toast("Sesión cerrada")}
+function showWelcome(){$("welcome").style.display="grid";$("active-chat").style.display="none";$("active-chat").classList.add("hidden");$("chat-panel").classList.remove("expanded")}
+function showActive(){$("welcome").style.display="none";$("active-chat").style.display="flex";$("active-chat").classList.remove("hidden");$("chat-panel").classList.add("expanded")}
+function requireAuth(){if(!user){authModal();return false}return true}
+function fmtTime(value){return new Date(value).toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"})}
+function fmtListTime(value){const d=new Date(value),now=new Date();return d.toDateString()===now.toDateString()?fmtTime(value):d.toLocaleDateString("es-MX",{day:"numeric",month:"short"})}
+async function loadConversations(){
+ if(!user)return;
+ const {data:members,error}=await client.from("nexo_conversation_members").select("conversation_id").eq("user_id",user.id);
+ if(error){$("conversation-list").innerHTML=`<div class="empty-list">${esc(error.message)}</div>`;return}
+ const ids=(members||[]).map(x=>x.conversation_id);if(!ids.length){$("conversation-list").innerHTML='<div class="empty-list">Todavía no tienes chats.<br>Usa “Nuevo” para comenzar.</div>';return}
+ const {data:convs,error:ce}=await client.from("nexo_conversations").select("id,kind,title,updated_at").in("id",ids).order("updated_at",{ascending:false});
+ if(ce){toast(ce.message);return}
+ const {data:allMembers}=await client.from("nexo_conversation_members").select("conversation_id,user_id,nexo_profiles(username,display_name)").in("conversation_id",ids);
+ const {data:latest}=await client.from("nexo_messages").select("id,conversation_id,sender_id,body,created_at,read_at").in("conversation_id",ids).order("created_at",{ascending:false}).limit(150);
+ const latestBy={};(latest||[]).forEach(m=>{if(!latestBy[m.conversation_id])latestBy[m.conversation_id]=m});
+ const byConv={};(allMembers||[]).forEach(m=>(byConv[m.conversation_id]??=[]).push(m));
+ $("conversation-list").innerHTML=(convs||[]).map(c=>{
+  const people=byConv[c.id]||[],others=people.filter(x=>x.user_id!==user.id);
+  const title=c.kind==="group"?(c.title||"Grupo"):((others[0]?.nexo_profiles?.display_name||others[0]?.nexo_profiles?.username)||"Conversación");
+  const last=latestBy[c.id],preview=last?(last.sender_id===user.id?"Tú: ":"")+last.body:"Aún no hay mensajes";
+  return `<div class="conversation ${activeConversation===c.id?"active":""}" onclick="openConversation('${c.id}')"><div class="avatar sm">${esc(initials(title))}</div><div class="conv-main"><div class="conv-top"><b>${esc(title)}</b><time>${last?fmtListTime(last.created_at):""}</time></div><span class="preview">${esc(preview)}</span></div>${last&&last.sender_id!==user.id&&!last.read_at?'<span class="unread"></span>':""}</div>`;
+ }).join("")||'<div class="empty-list">No hay conversaciones.</div>';
+ if(listChannel)client.removeChannel(listChannel);
+ listChannel=client.channel("nexo-conversation-list-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"nexo_messages"},payload=>{if(ids.includes(payload.new.conversation_id)){loadConversations();if(activeConversation===payload.new.conversation_id)loadMessages()}}).subscribe();
+}
+async function openConversation(id){
+ if(!user)return;
+ activeConversation=id;const {data:conv,error}=await client.from("nexo_conversations").select("id,kind,title").eq("id",id).single();if(error){toast(error.message);return}
+ activeConversationData=conv;
+ const {data:members}=await client.from("nexo_conversation_members").select("user_id,nexo_profiles(username,display_name)").eq("conversation_id",id);
+ const others=(members||[]).filter(x=>x.user_id!==user.id);
+ const title=conv.kind==="group"?(conv.title||"Grupo"):(others[0]?.nexo_profiles?.display_name||others[0]?.nexo_profiles?.username||"Chat privado");
+ $("chat-title").textContent=title;$("chat-avatar").textContent=initials(title);$("chat-subtitle").textContent=conv.kind==="group"?`${members?.length||0} participantes`:"Conversación privada";
+ $("chat-members").onclick=()=>showMembers(members||[],conv);
+ showActive();await loadMessages();await loadConversations();
+ if(messageChannel)client.removeChannel(messageChannel);
+ messageChannel=client.channel("nexo-messages-"+id).on("postgres_changes",{event:"INSERT",schema:"public",table:"nexo_messages",filter:`conversation_id=eq.${id}`},()=>{loadMessages();loadConversations()}).on("postgres_changes",{event:"DELETE",schema:"public",table:"nexo_messages",filter:`conversation_id=eq.${id}`},()=>loadMessages()).subscribe();
+}
+function unsubscribeMessages(){if(messageChannel){client.removeChannel(messageChannel);messageChannel=null}}
+async function loadMessages(){
+ if(!activeConversation)return;
+ const {data,error}=await client.from("nexo_messages").select("id,conversation_id,sender_id,body,created_at,read_at,nexo_profiles(username,display_name)").eq("conversation_id",activeConversation).order("created_at",{ascending:true}).limit(300);
+ if(error){$("messages").innerHTML=`<div class="empty-list">${esc(error.message)}</div>`;return}
+ $("messages").innerHTML=(data||[]).map(m=>{
+  const mine=m.sender_id===user.id,name=m.nexo_profiles?.display_name||m.nexo_profiles?.username||"Usuario";
+  return `<div class="message-row ${mine?"mine":""}">${!mine?`<div class="avatar sm">${esc(initials(name))}</div>`:""}<div class="message">${activeConversationData?.kind==="group"&&!mine?`<div class="message-author">${esc(name)}</div>`:""}<div class="message-body">${esc(m.body)}</div><div class="message-meta">${fmtTime(m.created_at)}${mine?(m.read_at?" · Visto":" · Enviado"):""}</div></div>${mine?`<button class="message-delete" title="Eliminar mensaje" onclick="deleteMessage('${m.id}')">×</button>`:""}</div>`;
+ }).join("")||'<div class="empty-list">Este chat está listo. Envía el primer mensaje.</div>';
+ $("messages").scrollTop=$("messages").scrollHeight;
+ const unread=(data||[]).filter(m=>m.sender_id!==user.id&&!m.read_at).map(m=>m.id);
+ if(unread.length)await client.from("nexo_messages").update({read_at:new Date().toISOString()}).in("id",unread);
+}
+async function sendMessage(e){e.preventDefault();if(!requireAuth()||!activeConversation)return;const input=$("message-input"),body=input.value.trim();if(!body)return;const btn=$("send-button");btn.disabled=true;try{const {error}=await client.from("nexo_messages").insert({conversation_id:activeConversation,sender_id:user.id,body});if(error)throw error;input.value="";await loadMessages();await loadConversations()}catch(e){toast(errorMessage(e))}finally{btn.disabled=false;input.focus()}}
+async function deleteMessage(id){if(!confirm("¿Eliminar este mensaje para todos los participantes?"))return;const {error}=await client.from("nexo_messages").delete().eq("id",id).eq("sender_id",user.id);if(error)toast(errorMessage(error));else{toast("Mensaje eliminado");loadMessages();loadConversations()}}
+async function searchPeople(){
+ const term=$("people-search").value.trim().replace(/^@/,"");if(term.length<2)return;
+ if(!user){authModal();return}
+ const {data,error}=await client.from("nexo_profiles").select("user_id,username,display_name").ilike("username",`%${term}%`).neq("user_id",user.id).limit(15);
+ if(error){toast(error.message);return}
+ const fields=(data||[]).map(p=>`<div class="user-result"><div class="avatar sm">${esc(initials(p.display_name))}</div><div class="who"><b>${esc(p.display_name)}</b><span>@${esc(p.username)}</span></div><button class="btn primary" onclick="startDirect('${p.user_id}')">Mensaje</button></div>`).join("")||'<div class="empty-list">No se encontraron personas.</div>';
+ modal("Buscar personas","Selecciona a quién quieres escribir.",`<div id="people-results">${fields}</div>`,`<button class="btn" onclick="closeModal()">Cerrar</button>`);
+}
+async function startDirect(otherId){
+ if(!requireAuth())return;
+ const {data,error}=await client.rpc("nexo_get_or_create_direct",{p_other_user:otherId});
+ if(error){toast(errorMessage(error));return}
+ closeModal();await loadConversations();await openConversation(data);
+}
+function newChatModal(){
+ if(!requireAuth())return;
+ modal("Crear conversación","Escribe uno o varios nombres de usuario. Para un grupo, separa los usuarios con comas.",`<div class="field"><label>Participantes</label><input id="new-users" placeholder="ana, luis, maria"></div><div class="field"><label>Nombre del grupo (opcional)</label><input id="new-title" maxlength="80" placeholder="Equipo de trabajo"></div>`,`<button class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="createConversation()">Crear chat</button>`);
+}
+async function createConversation(){
+ const names=$("new-users").value.split(",").map(x=>x.trim().toLowerCase().replace(/^@/,"")).filter(Boolean),title=$("new-title").value.trim();
+ if(!names.length){setStatus("Escribe al menos un nombre de usuario.");return}
+ if(names.length===1){
+  const {data:p,error}=await client.from("nexo_profiles").select("user_id").eq("username",names[0]).maybeSingle();
+  if(error||!p){setStatus("No existe el usuario @"+names[0]);return}
+  await startDirect(p.user_id);return;
+ }
+ const {data,error}=await client.rpc("nexo_create_group",{p_usernames:names,p_title:title||"Nuevo grupo"});
+ if(error){setStatus(errorMessage(error));return}
+ closeModal();await loadConversations();await openConversation(data);toast("Grupo creado");
+}
+function showMembers(members,conv){
+ const names=(members||[]).map(m=>`<div class="user-result"><div class="avatar sm">${esc(initials(m.nexo_profiles?.display_name))}</div><div class="who"><b>${esc(m.nexo_profiles?.display_name||"Usuario")}</b><span>@${esc(m.nexo_profiles?.username||"")}${m.user_id===user.id?" · Tú":""}</span></div></div>`).join("");
+ modal(conv.kind==="group"?"Participantes del grupo":"Participante", "Personas que forman parte de esta conversación.",names,`<button class="btn" onclick="closeModal()">Cerrar</button>`);
+}
+$("auth-button").onclick=()=>user?logout():authModal();
+$("new-chat").onclick=newChatModal;
+$("people-search").addEventListener("keydown",e=>{if(e.key==="Enter")searchPeople()});
+$("people-search").addEventListener("input",()=>{clearTimeout(searchTimer);const v=$("people-search").value.trim();if(v.length>=2)searchTimer=setTimeout(searchPeople,500)});
+$("message-form").addEventListener("submit",sendMessage);
+$("message-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("message-form").requestSubmit()}});
+async function init(){
+ if(!window.supabase){toast("No se pudo cargar el servicio de conexión.");return}
+ client=window.supabase.createClient(APP_URL,APP_KEY);
+ client.auth.onAuthStateChange(()=>setTimeout(syncSession,0));
+ await syncSession();
+}
+init();
+</script>
+</body>
+</html>
